@@ -1,25 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
+import AppRoute from "./components/AppRoute/AppRoute";
+import { AuthProvider } from "./contexts/AuthProvider";
+import { GlobalStyles } from "./globals/globalStyles";
+import { theme } from "./globals/themes";
+import DefaultLayout from "./layouts/DefaultLayout/DefaultLayout";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <AuthProvider>
+        <>
+          <GlobalStyles />
+          <Router>
+            <DefaultLayout />
+            <Suspense fallback={<div>Cargando...</div>}>
+              <AppRoute />
+            </Suspense>
+          </Router>
+        </>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
